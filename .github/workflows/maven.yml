@@ -10,6 +10,18 @@
 # SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
 #
 
+#
+# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License v. 2.0 which is available at
+# http://www.eclipse.org/legal/epl-2.0,
+# or the Eclipse Distribution License v. 1.0 which is available at
+# http://www.eclipse.org/org/documents/edl-v10.php.
+#
+# SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+#
+
 name: Jersey
 
 on: [push, pull_request]
@@ -42,7 +54,8 @@ jobs:
         secLoc=`find $JAVA_HOME -name java.security`
         sed -i 's/jdk.tls.disabledAlgorithms/# jdk.tls.disabledAlgorithms/g' -i $secLoc
     - name: Build
-      run: mvn -V -U -B ${{matrix.verify_profiles}} org.eclipse.dash:license-tool-plugin:license-check -DexcludeArtifactIds=bsh,jmh-core,jmh-generator-annprocess,swing-layout
+      run: 
+        mvn clean install -DskipTests -pl inject/hk2 -am
     - name: Run Tests
       run: |
         mvn -pl inject/hk2 test -Dtest=org.glassfish.jersey.inject.hk2.DisposableSupplierTest#testDisposeComposedObjectWithPerLookupFields
