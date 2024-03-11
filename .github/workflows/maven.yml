@@ -10,6 +10,18 @@
 # SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
 #
 
+#
+# Copyright (c) 2022, 2023 Contributors to the Eclipse Foundation
+#
+# This program and the accompanying materials are made available under the
+# terms of the Eclipse Public License v. 2.0 which is available at
+# http://www.eclipse.org/legal/epl-2.0,
+# or the Eclipse Distribution License v. 1.0 which is available at
+# http://www.eclipse.org/org/documents/edl-v10.php.
+#
+# SPDX-License-Identifier: EPL-2.0 OR BSD-3-Clause
+#
+
 name: Jersey
 
 on: [push, pull_request]
@@ -42,14 +54,14 @@ jobs:
         secLoc=`find $JAVA_HOME -name java.security`
         sed -i 's/jdk.tls.disabledAlgorithms/# jdk.tls.disabledAlgorithms/g' -i $secLoc
     - name: Build
-      run: |
-        mvn clean install -DskipTests -pl inject/hk2 -am > ci-build.log 2>&1
+      run: 
+        mvn clean install -DskipTests -pl inject/hk2 -am
     - name: Run Tests without nodex
       run: |
-        mvn -pl inject/hk2 test -Dtest=org.glassfish.jersey.inject.hk2.DisposableSupplierTest#testDisposeComposedObjectWithPerLookupFields >> ci-build.log 2>&1
+        mvn -pl inject/hk2 test -Dtest=org.glassfish.jersey.inject.hk2.DisposableSupplierTest#testDisposeComposedObjectWithPerLookupFields
     - name: Run Tests with nodex
       run: |
-        mvn -pl inject/hk2 edu.illinois:nondex-maven-plugin:2.1.1:nondex -Dtest=org.glassfish.jersey.inject.hk2.DisposableSupplierTest#testDisposeComposedObjectWithPerLookupFields >> ci-build.log 2>&1
+        mvn -pl inject/hk2 edu.illinois:nondex-maven-plugin:2.1.1:nondex -Dtest=org.glassfish.jersey.inject.hk2.DisposableSupplierTest#testDisposeComposedObjectWithPerLookupFields        
     - name: Upload license-check info
       uses: actions/upload-artifact@v3
       with:
